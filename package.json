@@ -1,0 +1,25 @@
+{
+  "name": "@packmate/mail",
+  "version": "0.4.2",
+  "description": "Send emails from Node.js (via SendGrid) with optional test runs.",
+  "main": "source/mail.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:packmate/mail.git"
+  },
+  "scripts": {
+    "test": "mocha -r tests/tests.support source/*.test.js"
+  },
+  "devDependencies": {
+    "@packmate/assure": "^0.0.5",
+    "async": "^3.2.0",
+    "chai": "^4.3.0",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^8.2.1",
+    "sinon": "^9.2.4",
+    "sinon-chai": "^3.5.0"
+  },
+  "dependencies": {
+    "@sendgrid/mail": "^7.4.2"
+  }
+}
