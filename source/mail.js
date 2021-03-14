@@ -2,6 +2,20 @@ const { assureProperties } = require('@packmate/assure')
 
 // ---------------------------------------------
 
+function forLogging(messages) {
+  return messages.map(message => {
+    if (message.attachment) {
+      return { ...message, attachment: { ...message.attachment, content: 'Truncated' } }
+    }
+
+    if (message.attachments) {
+      return { ...message, attachments: [ 'Truncated' ] }
+    }
+
+    return message
+  })
+}
+
 function toAddress({ name, emails }) {
   return [ ...new Set(emails) ].map(email => ({ name, email }))
 }
@@ -87,7 +101,7 @@ module.exports = (configureOptions = {}) => {
     // ---------------------------------------------
 
     const originalMessages = [ message ].flat()
-    await log(`Received data for ${ type }.`, { data: originalMessages })
+    await log(`Received data for ${ type }.`, { data: forLogging(originalMessages) })
 
     const messages = originalMessages
       .map(message => ({ ...message, from: sender }))
@@ -99,9 +113,9 @@ module.exports = (configureOptions = {}) => {
 
     const toSend = messages.map(message => toSendGrid(message, { dry, sender }))
 
-    await log(`Sending ${ type }.${ suffix }`, { messages: toSend })
+    await log(`Sending ${ type }.${ suffix }`, { messages: forLogging(toSend) })
     const response = await mail.send(toSend)
-    await log(`Sent ${ type }.${ suffix }`, { messages: toSend, response })
+    await log(`Sent ${ type }.${ suffix }`, { messages: forLogging(toSend), response })
 
     return response
   }

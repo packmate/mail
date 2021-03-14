@@ -1,6 +1,6 @@
 {
   "name": "@packmate/mail",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Send emails from Node.js (via SendGrid) with optional test runs.",
   "main": "source/mail.js",
   "repository": {

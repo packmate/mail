@@ -270,6 +270,19 @@ describe('.send()', () => {
           expect(sent[0].attachments).to.have.length(1)
           expect(sent[0].attachments[0]).to.deep.eq(attachment)
         })
+
+        it('truncates the attachment when logging', async () => {
+          const log = spy.async()
+
+          const attachment = { ...fake.attachment }
+          await send(fake.type, { ...fake.message, attachment }, { ...fake.options, log })
+
+          expect(log).to.have.been.called
+
+          expect(log.getCall(0).args[1].data[0].attachment.content).to.eq('Truncated')
+          expect(log.getCall(1).args[1].messages[0].attachments[0]).to.eq('Truncated')
+          expect(log.getCall(2).args[1].messages[0].attachments[0]).to.eq('Truncated')
+        })
       })
 
       context('without an attachment', () => {
